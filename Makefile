@@ -39,6 +39,7 @@ dwm: ${OBJ}
 
 clean:
 	rm -f dwm ${OBJ} *.orig *.rej
+	rm -f /usr/local/bin/terminal
 
 install: all
 	mkdir -p ${DESTDIR}${PREFIX}/bin
@@ -52,10 +53,14 @@ install: all
 	cp -f dwm release/
 	tar -czf release/dwm-${VERSION}.tar.gz -C release dwm
 
+	# Install the terminal script
+	install -Dm755 ./scripts/terminal /usr/local/bin/terminal
+
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
 		${DESTDIR}${MANPREFIX}/man1/dwm.1\
-		${DESTDIR}${PREFIX}/share/xsession/dwm.desktop
+		${DESTDIR}${PREFIX}/share/xsession/dwm.desktop\
+		/usr/local/bin/terminal  
 
 release: dwm
 	mkdir -p release

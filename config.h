@@ -31,19 +31,19 @@ static const char *colors[][3] = {
 };
 
 static const char *const autostart[] = {
-    "xset", "s", "off", NULL,
     "xset", "s", "noblank", NULL,
-    "xset", "-dpms", NULL,
-    "dbus-update-activation-environment", "--systemd", "--all", NULL,
-    "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1", NULL,
-    "flameshot", NULL,
-    "dunst", NULL,
-    "xfce4-power-manager", "--daemon", NULL,
-    "picom","--animations", "-b", NULL,
-    "sh", "-c", "feh --randomize --bg-fill ~/Pictures/backgrounds/*", NULL,
-    "synergy", NULL,
-    "slstatus", NULL,
-    NULL /* terminate */
+	"xset", "s", "off", NULL,
+	"xset", "-dpms", NULL,
+	"dbus-update-activation-environment", "--systemd", "--all", NULL,
+	"/usr/lib/mate-polkit/polkit-mate-authentication-agent-1", NULL,
+	"flameshot", NULL,
+	"dunst", NULL,
+	"xfce4-power-manager", "--daemon", NULL,
+	"picom","--animations", "-b", NULL,
+	"sh", "-c", "feh --randomize --bg-fill ~/Pictures/backgrounds/*", NULL,
+	"synergy", NULL,
+	"slstatus", NULL,
+	NULL /* terminate */
 };
 
 /* tagging */
@@ -91,7 +91,7 @@ static const Layout layouts[] = {
 #define STATUSBAR "dwmblocks"
 /* commands */
 static const char *launchercmd[] = { "rofi", "-show", "drun", NULL };
-static const char *termcmd[]  = { "i3-sensible-terminal", NULL };
+static const char *termcmd[]  = { "/usr/local/bin/terminal", NULL };
 
 static Key keys[] = {
 	/* modifier                     key            function                argument */

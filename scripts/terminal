@@ -1,0 +1,32 @@
+#!/bin/sh 
+
+# Check for Kitty terminal
+if command -v kitty >/dev/null 2>&1
+then
+    TERMINAL="kitty"
+# Check for Alacritty terminal
+ elif command -v alacritty >/dev/null 2>&1
+ then
+     TERMINAL="alacritty"
+ # Check for other common terminals
+ else
+     for term in x-terminal-emulator urxvt rxvt terminator Eterm aterm xterm gnome-terminal konsole xfce4-terminal lxterminal mate-terminal terminology st
+     do
+         if command -v "$term" >/dev/null 2>&1
+        then
+            TERMINAL="$term"
+            break
+        fi
+    done
+fi
+if [ -n "$TERMINAL" ]
+then
+    export TERMINAL
+    echo "Using terminal: $TERMINAL"
+    exec $TERMINAL
+    exit 0
+else
+    # If no terminal is found, set a default or exit with an error
+    printf "No suitable terminal found\n" >&2
+    exit 1
+fi

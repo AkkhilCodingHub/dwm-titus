@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Check for sudo or doas
 if command -v sudo > /dev/null 2>&1; then
@@ -34,7 +34,7 @@ install_debian() {
         echo "Xorg and related packages are already installed."
     fi
 
-    $SUDO apt install -y libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libepoxy-dev libpcre2-dev libpixman-1-dev libx11-xcb-dev libxcb1-dev libxcb-composite0-dev libxcb-damage0-dev libxcb-dpms0-dev libxcb-glx0-dev libxcb-image0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-util-dev libxcb-xfixes0-dev libxext-dev meson ninja-build uthash-dev cmake libxft-dev libimlib2-dev libxinerama-dev libxcb-res0-dev alsa-utils i3-wm xfce4-power-manager make || handle_error "Failed to install dependencies"
+    $SUDO apt install -y libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libepoxy-dev libpcre2-dev libpixman-1-dev libx11-xcb-dev libxcb1-dev libxcb-composite0-dev libxcb-damage0-dev libxcb-dpms0-dev libxcb-glx0-dev libxcb-image0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-util-dev libxcb-xfixes0-dev libxext-dev meson ninja-build uthash-dev cmake libxft-dev libimlib2-dev libxinerama-dev libxcb-res0-dev alsa-utils xfce4-power-manager make || handle_error "Failed to install dependencies"
 }
 
 # Function to install dependencies for Red Hat-based distributions
@@ -49,7 +49,7 @@ install_redhat() {
         echo "Xorg and related packages are already installed."
     fi
 
-    $SUDO yum install -y dbus-devel gcc git libconfig-devel libdrm-devel libev-devel libX11-devel libX11-xcb libXext-devel libxcb-devel libGL-devel libEGL-devel libepoxy-devel meson ninja-build pcre2-devel pixman-devel uthash-devel xcb-util-image-devel xcb-util-renderutil-devel xorg-x11-proto-devel xcb-util-devel cmake libXft-devel imlib2-devel libXinerama-devel alsa-utils i3 xfce4-power-manager make || handle_error "Failed to install dependencies"
+    $SUDO yum install -y dbus-devel gcc git libconfig-devel libdrm-devel libev-devel libX11-devel libX11-xcb libXext-devel libxcb-devel libGL-devel libEGL-devel libepoxy-devel meson ninja-build pcre2-devel pixman-devel uthash-devel xcb-util-image-devel xcb-util-renderutil-devel xorg-x11-proto-devel xcb-util-devel cmake libXft-devel imlib2-devel libXinerama-devel alsa-utils xfce4-power-manager make || handle_error "Failed to install dependencies"
 }
 
 # Function to install dependencies for Arch-based distributions
@@ -64,22 +64,22 @@ install_arch() {
         echo "Xorg and related packages are already installed."
     fi
 
-    $SUDO pacman -S --noconfirm base-devel libconfig dbus libev libx11 libxcb libxext libgl libegl libepoxy meson pcre2 pixman uthash xcb-util-image xcb-util-renderutil xorgproto cmake libxft libimlib2 libxinerama libxcb-res xorg-xev alsa-utils pulseaudio-alsa i3-wm xfce4-power-manager make || handle_error "Failed to install dependencies"
+    $SUDO pacman -S --noconfirm base-devel libconfig dbus libev libx11 libxcb libxext libgl libegl libepoxy meson ninja pcre2 pixman uthash xcb-util-image xcb-util-renderutil xorgproto cmake libxft libimlib2 libxinerama libxcb-res xorg-xev alsa-utils pulseaudio-alsa xfce4-power-manager make || handle_error "Failed to install dependencies"
 
     # AUR helper installation
-    if ! command -v yay &> /dev/null && ! command -v paru &> /dev/null; then
+    if ! command -v yay > /dev/null 2>&1 && ! command -v paru > /dev/null 2>&1; then
         echo "No AUR helper found. Installing yay..."
         git clone https://aur.archlinux.org/yay.git || handle_error "Failed to clone yay repository"
-        cd yay
+        cd yay || handle_error "Failed to change directory to yay"
         makepkg -si --noconfirm || handle_error "Failed to install yay"
-        cd ..
+        cd .. || handle_error "Failed to return to parent directory"
         rm -rf yay
     fi
 
     # Install brillo using the available AUR helper
-    if command -v yay &> /dev/null; then
+    if command -v yay > /dev/null 2>&1; then
         yay -S --noconfirm brillo || handle_error "Failed to install brillo"
-    elif command -v paru &> /dev/null; then
+    elif command -v paru > /dev/null 2>&1; then
         paru -S --noconfirm brillo || handle_error "Failed to install brillo"
     else
         echo "No AUR helper available. Skipping brillo installation."
@@ -115,7 +115,7 @@ fi
 
 # Function to install Meslo Nerd font for dwm and rofi icons to work
 install_nerd_font() {
-    FONT_DIR="$HOME/.local/share/fonts"
+    FONT_DIR="~/.local/share/fonts"
     FONT_ZIP="$FONT_DIR/Meslo.zip"
     FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip"
     FONT_INSTALLED=$(fc-list | grep -i "Meslo")
