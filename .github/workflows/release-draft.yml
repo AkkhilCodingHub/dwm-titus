@@ -1,4 +1,4 @@
-name: Generate Release Notes
+name: Create Release Draft
 
 on:
   workflow_dispatch:
@@ -6,25 +6,27 @@ on:
       version:
         description: 'Release Version'
         required: true
+        default: '0.0.1'
 
 jobs:
-  build:
+  draft:
     runs-on: ubuntu-latest
     env:
       GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+      VERSION: ${{ inputs.version }}
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Generate Release Notes
-      id: release_notes
+    - name: Prepare Release Draft
+      id: release_draft
       run: |
-        echo "## Release Notes for v${VERSION}" > release_notes.md
-        git log --pretty=format:"* %s" >> release_notes.md
+        echo "## Release Draft for v${VERSION}" > release_draft.md
+        git log --pretty=format:"* %s" >> release_draft.md
 
-    - name: Upload Release Notes
+    - name: Upload Release Draft
       uses: actions/upload-artifact@v4
       with:
-        name: release-notes
-        path: release_notes.md
+        name: release-draft
+        path: release_draft.md
