@@ -3,9 +3,6 @@ name: Generate Release Notes
 on:
   workflow_dispatch:
     inputs:
-      token:
-        description: 'Git_Token'
-        required: true
       version:
         description: 'Release Version'
         required: true
@@ -13,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
 
     steps:
     - name: Checkout code
@@ -29,4 +28,3 @@ jobs:
       with:
         name: release-notes
         path: release_notes.md
-
