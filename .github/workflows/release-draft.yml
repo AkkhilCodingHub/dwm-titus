@@ -1,0 +1,32 @@
+name: Generate Release Notes
+
+on:
+  workflow_dispatch:
+    inputs:
+      token:
+        description: 'GitHub Token'
+        required: true
+      version:
+        description: 'Release Version'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Generate Release Notes
+      id: release_notes
+      run: |
+        echo "## Release Notes for v${VERSION}" > release_notes.md
+        git log --pretty=format:"* %s" >> release_notes.md
+
+    - name: Upload Release Notes
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-notes
+        path: release_notes.md
+
