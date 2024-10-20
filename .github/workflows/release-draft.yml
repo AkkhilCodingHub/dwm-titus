@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       token:
-        description: 'GitHub Token'
+        description: 'Git_Token'
         required: true
       version:
         description: 'Release Version'
